@@ -1,5 +1,6 @@
 package com.rafael.lojaionic;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,20 @@ import com.rafael.lojaionic.domain.Cidade;
 import com.rafael.lojaionic.domain.Cliente;
 import com.rafael.lojaionic.domain.Endereco;
 import com.rafael.lojaionic.domain.Estado;
+import com.rafael.lojaionic.domain.Pagamento;
+import com.rafael.lojaionic.domain.PagamentoComBoleto;
+import com.rafael.lojaionic.domain.PagamentoComCartao;
+import com.rafael.lojaionic.domain.Pedido;
 import com.rafael.lojaionic.domain.Produto;
+import com.rafael.lojaionic.domain.enuns.EstadoPagamento;
 import com.rafael.lojaionic.domain.enuns.TipoCliente;
 import com.rafael.lojaionic.repositories.CategoriaRepository;
 import com.rafael.lojaionic.repositories.CidadeRepository;
 import com.rafael.lojaionic.repositories.ClienteRepository;
 import com.rafael.lojaionic.repositories.EnderecoRepository;
 import com.rafael.lojaionic.repositories.EstadoRepository;
+import com.rafael.lojaionic.repositories.PagamentoRepository;
+import com.rafael.lojaionic.repositories.PedidoRepository;
 import com.rafael.lojaionic.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -45,6 +53,13 @@ public class LojaIonicApplication implements CommandLineRunner{
 	
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+	
+	@Autowired
+	private PedidoRepository pedidoRepository;
+	
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
+	
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -53,6 +68,8 @@ public class LojaIonicApplication implements CommandLineRunner{
 		Categoria cat2 = new Categoria(null, "Escritório");
 		
 		categoriaRepository.saveAll(Arrays.asList(cat1, cat2));
+		
+		/*------------------------------PRODUTO------------------------------------------------------------------------------------------------------*/
 		
 		Produto p1 = new Produto(null, "Computador", 2000.00);
 		Produto p2 = new Produto(null, "impressora", 800.00);
@@ -68,9 +85,13 @@ public class LojaIonicApplication implements CommandLineRunner{
 		
 		produtoRepository.saveAll(Arrays.asList(p1, p2, p3));
 		
+		/*-----------------------------------ESTADOS-------------------------------------------------------------------------------------------------*/
+		
 		Estado est1 = new Estado(null, "Ceará");
 		
 		estadoRepository.saveAll(Arrays.asList(est1));
+		
+		/*----------------------------------CIDADES--------------------------------------------------------------------------------------------------*/
 		
 		Cidade cid1 = new Cidade(null, "Fortaleza", est1);
 		Cidade cid2 = new Cidade(null, "Maracanaú", est1);
@@ -78,6 +99,8 @@ public class LojaIonicApplication implements CommandLineRunner{
 		est1.getCidades().addAll(Arrays.asList(cid1, cid2));
 		
 		cidadeRepository.saveAll(Arrays.asList(cid1, cid2));
+		
+		/*----------------------------------CLIENTE E ENDEREÇOS-------------------------------------------------------------------------------------*/
 		
 		Cliente cli1 = new Cliente(null, "Rafael de Souza Alves", "rmfashionmoda@gmail.com", "16734662063", TipoCliente.PESSOAFISICA);
 		cli1.getTelefones().addAll(Arrays.asList("85965702213", "85987665012"));
@@ -96,6 +119,24 @@ public class LojaIonicApplication implements CommandLineRunner{
 		clienteRepository.saveAll(Arrays.asList(cli1, cli2));
 		enderecoRepository.saveAll(Arrays.asList(end1, end2));
 		
+		/*------------------------------------PEDIDO E PAGAMENTO------------------------------------------------------------------------------------*/
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		
+		Pedido ped1 = new Pedido(null, sdf.parse("30/09/2023 10:32"), cli1, end1);
+		Pedido ped2 = new Pedido(null, sdf.parse("25/12/2023 23:32"), cli2, end2);
+		
+		Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
+		ped1.setPagamento(pagto1);
+		
+		Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("28/12/2023 00:00"), null);
+		ped2.setPagamento(pagto2);
+		
+		cli1.getPedidos().addAll(Arrays.asList(ped1));
+		cli2.getPedidos().addAll(Arrays.asList(ped2));
+		
+		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
+		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
 		
 	}
 
