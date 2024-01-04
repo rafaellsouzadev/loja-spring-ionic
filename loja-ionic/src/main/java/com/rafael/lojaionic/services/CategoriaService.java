@@ -1,5 +1,6 @@
 package com.rafael.lojaionic.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.rafael.lojaionic.domain.Categoria;
+import com.rafael.lojaionic.domain.dto.CategoriaListDTO;
 import com.rafael.lojaionic.repositories.CategoriaRepository;
 import com.rafael.lojaionic.services.exceptions.DataIntegrityException;
 import com.rafael.lojaionic.services.exceptions.ObjectNotFoundException;
@@ -43,6 +45,11 @@ public class CategoriaService {
 			throw new DataIntegrityException("Não é possivel excluir uma categoria que possua produtos");
 		}
 		
+	}
+
+	public List<CategoriaListDTO> findAll() {
+		List<Categoria> result = categoriaRepository.findAll();
+		return result.stream().map(x -> new CategoriaListDTO(x)).toList();
 	}
 
 }

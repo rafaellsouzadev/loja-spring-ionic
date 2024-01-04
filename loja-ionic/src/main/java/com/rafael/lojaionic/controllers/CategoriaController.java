@@ -1,9 +1,9 @@
 package com.rafael.lojaionic.controllers;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,11 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.fasterxml.jackson.annotation.JacksonInject.Value;
 import com.rafael.lojaionic.domain.Categoria;
+import com.rafael.lojaionic.domain.dto.CategoriaListDTO;
 import com.rafael.lojaionic.services.CategoriaService;
-
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/categorias")
@@ -31,7 +29,14 @@ public class CategoriaController {
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Categoria> find(@PathVariable Integer id) {
 		Categoria categoria = categoriaService.find(id);
-		return ResponseEntity.status(HttpStatus.OK).body(categoria);
+		return ResponseEntity.ok().body(categoria);
+	}
+	
+	@GetMapping
+	public ResponseEntity<List<CategoriaListDTO>> findAll() {
+		List<CategoriaListDTO> categorias = categoriaService.findAll();
+		
+		return ResponseEntity.ok().body(categorias);
 	}
 	
 	@PostMapping
@@ -57,4 +62,6 @@ public class CategoriaController {
 		
 		return ResponseEntity.noContent().build();
 	}
+	
+	
 }

@@ -23,4 +23,6 @@ public class ClienteController {
 		Cliente cliente = clienteService.find(id);
 		return ResponseEntity.status(HttpStatus.OK).body(cliente);
 	}
+	
+	
 }
