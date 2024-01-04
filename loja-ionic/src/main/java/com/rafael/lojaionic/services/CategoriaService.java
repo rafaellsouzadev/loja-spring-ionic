@@ -3,10 +3,12 @@ package com.rafael.lojaionic.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.rafael.lojaionic.domain.Categoria;
 import com.rafael.lojaionic.repositories.CategoriaRepository;
+import com.rafael.lojaionic.services.exceptions.DataIntegrityException;
 import com.rafael.lojaionic.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -30,6 +32,17 @@ public class CategoriaService {
 	public Categoria update(Categoria categoria) {
 		find(categoria.getId());
 		return categoriaRepository.save(categoria);
+	}
+
+	public void delete(Integer id) {
+		find(id);
+		try {
+		categoriaRepository.deleteById(id);
+		} 
+		catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Não é possivel excluir uma categoria que possua produtos");
+		}
+		
 	}
 
 }
