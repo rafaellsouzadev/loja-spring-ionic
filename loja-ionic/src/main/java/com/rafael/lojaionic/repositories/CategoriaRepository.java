@@ -6,4 +6,6 @@ import com.rafael.lojaionic.domain.Categoria;
 
 public interface CategoriaRepository extends JpaRepository<Categoria, Integer>{
 
+	
+
 }
