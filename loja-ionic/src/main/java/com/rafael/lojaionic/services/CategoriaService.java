@@ -8,11 +8,10 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.querydsl.QPageRequest;
 import org.springframework.stereotype.Service;
 
 import com.rafael.lojaionic.domain.Categoria;
-import com.rafael.lojaionic.domain.dto.CategoriaListDTO;
+import com.rafael.lojaionic.domain.dto.CategoriaDTO;
 import com.rafael.lojaionic.repositories.CategoriaRepository;
 import com.rafael.lojaionic.services.exceptions.DataIntegrityException;
 import com.rafael.lojaionic.services.exceptions.ObjectNotFoundException;
@@ -51,9 +50,9 @@ public class CategoriaService {
 		
 	}
 
-	public List<CategoriaListDTO> findAll() {
+	public List<CategoriaDTO> findAll() {
 		List<Categoria> result = categoriaRepository.findAll();
-		return result.stream().map(x -> new CategoriaListDTO(x)).toList();
+		return result.stream().map(x -> new CategoriaDTO(x)).toList();
 	}
 	
 	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
@@ -61,6 +60,8 @@ public class CategoriaService {
 		return categoriaRepository.findAll(pageRequest);
 	}
 	
-	
+	public Categoria fromDTO(CategoriaDTO categoriaDTO) {
+		return new Categoria(categoriaDTO.getId(), categoriaDTO.getNome());
+	}
 
 }
