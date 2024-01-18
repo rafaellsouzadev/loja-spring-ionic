@@ -3,9 +3,13 @@ package com.rafael.lojaionic.services.validation;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.rafael.lojaionic.controllers.exceptions.FieldMessage;
+import com.rafael.lojaionic.domain.Cliente;
 import com.rafael.lojaionic.domain.dto.ClienteNewDTO;
 import com.rafael.lojaionic.domain.enuns.TipoCliente;
+import com.rafael.lojaionic.repositories.ClienteRepository;
 import com.rafael.lojaionic.services.validation.utils.BR;
 
 import jakarta.validation.ConstraintValidator;
@@ -13,6 +17,8 @@ import jakarta.validation.ConstraintValidatorContext;
 
 public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert, ClienteNewDTO> {
 	
+	@Autowired
+	private ClienteRepository clienteRepository;
 	
 	@Override
 	public void initialize(ClienteInsert ann) {
@@ -32,6 +38,13 @@ public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert
 				!BR.isValidCNPJ(objDto.getCpfOuCnpj())) {
 			list.add(new FieldMessage("CpfOuCnpj", "CNPJ inválido"));
 		}
+		
+		Cliente aux = clienteRepository.findByEmail(objDto.getEmail());
+		
+		if (aux != null) {
+			list.add(new FieldMessage("email", "E-mail já existente"));
+		}
+		
 
 		// inclua os testes aqui, inserindo erros na lista
 
