@@ -79,16 +79,28 @@ public class LojaIonicApplication implements CommandLineRunner{
 		Produto p1 = new Produto(null, "Computador", 2000.00);
 		Produto p2 = new Produto(null, "impressora", 800.00);
 		Produto p3 = new Produto(null, "Mouse", 80.00);
+		Produto p4 = new Produto(null, "Mesa de computador", 399.00);
+		Produto p5 = new Produto(null, "Processador i7 12700k", 1249.00);
+		Produto p6 = new Produto(null, "Processador Ryzen 5 5600G", 800.00);
+		Produto p7 = new Produto(null, "TV Monitor 22 Polegada", 1200.00);
+		Produto p8 = new Produto(null, "Grampeador grande 23/8-13", 149.00);
+		Produto p9 = new Produto(null, "Papel Sulfite A4, 75g 300 Folhas", 20.70);
 		
-		cat1.getProdutos().addAll(Arrays.asList(p1, p2, p3));
-		cat2.getProdutos().addAll(Arrays.asList(p2));
+		cat1.getProdutos().addAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7));
+		cat2.getProdutos().addAll(Arrays.asList(p2, p4, p8, p9));
 		
 		p1.getCategorias().addAll(Arrays.asList(cat1));
 		p2.getCategorias().addAll(Arrays.asList(cat1, cat2));
 		p3.getCategorias().addAll(Arrays.asList(cat1));
+		p4.getCategorias().addAll(Arrays.asList(cat1, cat2));
+		p5.getCategorias().addAll(Arrays.asList(cat1));
+		p6.getCategorias().addAll(Arrays.asList(cat1));
+		p7.getCategorias().addAll(Arrays.asList(cat1));
+		p8.getCategorias().addAll(Arrays.asList(cat2));
+		p9.getCategorias().addAll(Arrays.asList(cat2));
 		
 		
-		produtoRepository.saveAll(Arrays.asList(p1, p2, p3));
+		produtoRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7,p8, p9));
 		
 		/*-----------------------------------ESTADOS-------------------------------------------------------------------------------------------------*/
 		
