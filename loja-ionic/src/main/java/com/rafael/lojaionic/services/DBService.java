@@ -20,6 +20,7 @@ import com.rafael.lojaionic.domain.PagamentoComCartao;
 import com.rafael.lojaionic.domain.Pedido;
 import com.rafael.lojaionic.domain.Produto;
 import com.rafael.lojaionic.domain.enuns.EstadoPagamento;
+import com.rafael.lojaionic.domain.enuns.Perfil;
 import com.rafael.lojaionic.domain.enuns.TipoCliente;
 import com.rafael.lojaionic.repositories.CategoriaRepository;
 import com.rafael.lojaionic.repositories.CidadeRepository;
@@ -117,9 +118,11 @@ public class DBService {
 		Cliente cli1 = new Cliente(null, "Rafael de Souza Alves", "rmfashionmoda@gmail.com", "16734662063",
 				TipoCliente.PESSOAFISICA, pe.encode(""));
 		cli1.getTelefones().addAll(Arrays.asList("85965702213", "85987665012"));
+		cli1.addPerfil(Perfil.ADMIN);
 
 		Cliente cli2 = new Cliente(null, "Hinata Hyuga", "teste@gmail.com", "36712049075", TipoCliente.PESSOAFISICA, pe.encode(""));
 		cli2.getTelefones().addAll(Arrays.asList("85950227654"));
+		cli1.addPerfil(Perfil.CLIENTE);
 
 		Endereco end1 = new Endereco(null, "Rua 13 de Maio", "300", null, "Fátima", "60040531", cli1, cid1);
 
