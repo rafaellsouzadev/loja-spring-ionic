@@ -2,14 +2,14 @@ package com.rafael.lojaionic.domain.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
 import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.BeanUtils;
 
 import com.rafael.lojaionic.domain.Cliente;
 import com.rafael.lojaionic.services.validation.ClienteUpdate;
-
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
 
 @ClienteUpdate
 public class ClienteDTO implements Serializable {

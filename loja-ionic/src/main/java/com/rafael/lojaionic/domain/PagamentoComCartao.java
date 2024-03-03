@@ -1,9 +1,9 @@
 package com.rafael.lojaionic.domain;
 
+import javax.persistence.Entity;
+
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.rafael.lojaionic.domain.enuns.EstadoPagamento;
-
-import jakarta.persistence.Entity;
 
 @Entity
 @JsonTypeName("pagamentoComCartao")

@@ -3,6 +3,8 @@ package com.rafael.lojaionic.controllers;
 import java.net.URI;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +22,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.rafael.lojaionic.domain.Categoria;
 import com.rafael.lojaionic.domain.dto.CategoriaDTO;
 import com.rafael.lojaionic.services.CategoriaService;
-
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/categorias")

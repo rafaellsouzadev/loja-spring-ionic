@@ -2,13 +2,13 @@ package com.rafael.lojaionic.domain.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.BeanUtils;
 
 import com.rafael.lojaionic.domain.Categoria;
-
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 
 public class CategoriaDTO implements Serializable{
 

@@ -5,11 +5,11 @@ import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "item_pedido")

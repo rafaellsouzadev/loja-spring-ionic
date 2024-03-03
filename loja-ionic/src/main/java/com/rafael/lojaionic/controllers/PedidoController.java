@@ -2,6 +2,8 @@ package com.rafael.lojaionic.controllers;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +17,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.rafael.lojaionic.domain.Pedido;
 import com.rafael.lojaionic.services.PedidoService;
-
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/pedidos")

@@ -3,6 +3,8 @@ package com.rafael.lojaionic.controllers;
 import java.net.URI;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -22,8 +24,6 @@ import com.rafael.lojaionic.domain.Cliente;
 import com.rafael.lojaionic.domain.dto.ClienteDTO;
 import com.rafael.lojaionic.domain.dto.ClienteNewDTO;
 import com.rafael.lojaionic.services.ClienteService;
-
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/clientes")

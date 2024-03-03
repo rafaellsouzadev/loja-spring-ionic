@@ -1,7 +1,5 @@
 package com.rafael.lojaionic.config;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,21 +7,39 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.rafael.lojaionic.security.JWTAuthenticationFilter;
+import com.rafael.lojaionic.security.JWTAuthorizationFilter;
+import com.rafael.lojaionic.security.JWTUtil;
 
+
+
+@SuppressWarnings("deprecation")
 @Configuration
-public class SecurityConfig {	
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class SecurityConfig  extends WebSecurityConfigurerAdapter {	
+	
+	@Autowired
+	private UserDetailsService userDetailsService;
 	
 	@Autowired
     private Environment env;
-		
+	
+	@Autowired
+	private JWTUtil jwtUtil;
+	
 	private static final String[] PUBLIC_MATCHERS = {
 			"/h2-console/**"
 	};
@@ -32,7 +48,6 @@ public class SecurityConfig {
 			"/produtos/**",
 			"/categorias/**",
 			"/estados/**"
-			
 	};
 
 	private static final String[] PUBLIC_MATCHERS_POST = {
@@ -40,25 +55,28 @@ public class SecurityConfig {
 			"/auth/forgot/**"
 	};
 
-	@SuppressWarnings({ "deprecation", "removal" })
-	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-	    if (Arrays.asList(env.getActiveProfiles()).contains("test")) {
-	        http.headers(headers -> headers.frameOptions().disable());
-	    }
-
-	    http.cors(withDefaults()).csrf(csrf -> csrf.disable());
-	    http
-	        .authorizeRequests(authorize -> authorize
-	            .requestMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
-	            .requestMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
-	            .requestMatchers(PUBLIC_MATCHERS).permitAll()
-	            .anyRequest().authenticated()
-	        );
-	    http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-	    return http.build();
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		
+		if (Arrays.asList(env.getActiveProfiles()).contains("test")) {
+            http.headers().frameOptions().disable();
+        }
+		
+		http.cors().and().csrf().disable();
+        http.authorizeRequests(requests -> requests
+                .antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
+                .antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
+                .antMatchers(PUBLIC_MATCHERS).permitAll()
+                .anyRequest().authenticated());
+        http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+        http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
+        http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 	}
 	
+	@Override
+	public void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+	}
 	
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {

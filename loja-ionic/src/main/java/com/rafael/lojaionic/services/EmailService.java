@@ -1,10 +1,10 @@
 package com.rafael.lojaionic.services;
 
+import javax.mail.internet.MimeMessage;
+
 import org.springframework.mail.SimpleMailMessage;
 
 import com.rafael.lojaionic.domain.Pedido;
-
-import jakarta.mail.internet.MimeMessage;
 
 public interface EmailService {
 	

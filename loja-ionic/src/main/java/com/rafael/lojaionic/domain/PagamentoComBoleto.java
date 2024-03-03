@@ -2,11 +2,11 @@ package com.rafael.lojaionic.domain;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.rafael.lojaionic.domain.enuns.EstadoPagamento;
-
-import jakarta.persistence.Entity;
 
 @Entity
 @JsonTypeName("pagamentoComBoleto")
