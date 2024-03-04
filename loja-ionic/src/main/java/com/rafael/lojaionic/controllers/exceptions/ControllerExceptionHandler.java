@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.rafael.lojaionic.services.exceptions.AuthorizationException;
 import com.rafael.lojaionic.services.exceptions.DataIntegrityException;
 import com.rafael.lojaionic.services.exceptions.ObjectNotFoundException;
 
@@ -43,6 +44,15 @@ public class ControllerExceptionHandler {
 		}
 		
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+		
+	}
+	
+	@ExceptionHandler(AuthorizationException.class)
+	public ResponseEntity<StandardError> Authorization(AuthorizationException e, HttpServletRequest request) {
+		
+		StandardError err = new StandardError(HttpStatus.FORBIDDEN.value(), e.getMessage(), System.currentTimeMillis());
+		
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
 		
 	}
 

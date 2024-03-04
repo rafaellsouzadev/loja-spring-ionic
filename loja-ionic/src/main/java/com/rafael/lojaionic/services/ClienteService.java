@@ -17,9 +17,12 @@ import com.rafael.lojaionic.domain.Cliente;
 import com.rafael.lojaionic.domain.Endereco;
 import com.rafael.lojaionic.domain.dto.ClienteDTO;
 import com.rafael.lojaionic.domain.dto.ClienteNewDTO;
+import com.rafael.lojaionic.domain.enuns.Perfil;
 import com.rafael.lojaionic.domain.enuns.TipoCliente;
 import com.rafael.lojaionic.repositories.ClienteRepository;
 import com.rafael.lojaionic.repositories.EnderecoRepository;
+import com.rafael.lojaionic.security.UserSS;
+import com.rafael.lojaionic.services.exceptions.AuthorizationException;
 import com.rafael.lojaionic.services.exceptions.DataIntegrityException;
 import com.rafael.lojaionic.services.exceptions.ObjectNotFoundException;
 
@@ -36,6 +39,13 @@ public class ClienteService {
 	private BCryptPasswordEncoder pe;
 	
 	public Cliente find(Integer id) {
+		
+		UserSS user = UserService.authenticated();
+		
+		if (user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		
 		Optional<Cliente> cliente = clienteRepository.findById(id);
 		return cliente.orElseThrow(() -> new ObjectNotFoundException("Cliente não encontrado ID: " + id
 				+ ", Tipo: " + Cliente.class.getName()));
