@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.rafael.lojaionic.domain.Cliente;
@@ -36,6 +37,12 @@ public class ClienteController {
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Cliente> find(@PathVariable Integer id) {
 		Cliente cliente = clienteService.find(id);
+		return ResponseEntity.status(HttpStatus.OK).body(cliente);
+	}
+	
+	@GetMapping(value = "/email")
+	public ResponseEntity<Cliente> findByEmail(@RequestParam(value = "value") String email) {
+		Cliente cliente = clienteService.findByEmail(email);
 		return ResponseEntity.status(HttpStatus.OK).body(cliente);
 	}
 	
@@ -74,6 +81,15 @@ public class ClienteController {
 		
 		return ResponseEntity.created(uri).build();
 	}
+	
+	@PostMapping(value = "/picture")
+	public ResponseEntity<Void> uploadProfilePicture(@RequestParam(name = "file") MultipartFile file) {
+		
+		URI uri = clienteService.uploadProfilePicture(file);		
+		return ResponseEntity.created(uri).build();
+	}
+	
+	
 	
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping(value = "/page")

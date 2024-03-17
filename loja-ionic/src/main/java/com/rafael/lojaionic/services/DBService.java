@@ -116,11 +116,11 @@ public class DBService {
 		/*----------------------------------CLIENTE E ENDEREÇOS-------------------------------------------------------------------------------------*/
 
 		Cliente cli1 = new Cliente(null, "Rafael de Souza Alves", "rmfashionmoda@gmail.com", "16734662063",
-				TipoCliente.PESSOAFISICA, pe.encode(""));
+				TipoCliente.PESSOAFISICA, pe.encode("?Kill4r3e2w1q#"));
 		cli1.getTelefones().addAll(Arrays.asList("85965702213", "85987665012"));
 		cli1.addPerfil(Perfil.ADMIN);
 
-		Cliente cli2 = new Cliente(null, "Hinata Hyuga", "teste@gmail.com", "36712049075", TipoCliente.PESSOAFISICA, pe.encode(""));
+		Cliente cli2 = new Cliente(null, "Hinata Hyuga", "teste@gmail.com", "36712049075", TipoCliente.PESSOAFISICA, pe.encode("123"));
 		cli2.getTelefones().addAll(Arrays.asList("85950227654"));
 		cli1.addPerfil(Perfil.CLIENTE);
 
